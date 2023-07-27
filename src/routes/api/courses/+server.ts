@@ -9,8 +9,8 @@ export const GET = (async ({ setHeaders }) => {
 
     fetched_courses.forEach((course) => (courses[course.id] = course))
 
-    setHeaders({
-        "cache-control": "public, max-age=60",
-    })
+    /* setHeaders({ */
+    /*     "cache-control": "max-age=60", */
+    /* }) */
     return json({ data: courses }, { status: 200 })
 }) satisfies RequestHandler

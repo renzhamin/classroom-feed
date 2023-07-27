@@ -9,6 +9,10 @@
 
     let allPosts: Post[] = [];
     let filteredPosts: Post[] = [];
+    let total_courses = 0;
+    let posts_fetched = 0;
+
+    $: percentage_fetched = ~~((posts_fetched / total_courses) * 100);
 
     async function fetchData(courseId: string) {
         let data: any = await fetch(`/api/posts/${courseId}`);
@@ -18,6 +22,7 @@
             return a.updateTime < b.updateTime ? 1 : -1;
         });
         allPosts = allPosts;
+        posts_fetched += 1;
     }
 
     function fetchPosts() {
@@ -36,14 +41,17 @@
                 .then((data) => data.json())
                 .then((data) => {
                     $all_courses = data.data;
-                    $sel_courses = Object.keys(data.data);
+                    const course_ids = Object.keys(data.data);
+                    $sel_courses = course_ids;
+                    total_courses = course_ids.length;
                     localStore.set("all_courses", data.data);
                     allPromises = Promise.all(fetchPosts());
                 });
         } else {
             $all_courses = all_courses_saved;
-            $sel_courses =
-                localStore.get("sel_courses") || Object.keys($all_courses);
+            const course_ids = Object.keys($all_courses);
+            total_courses = course_ids.length;
+            $sel_courses = localStore.get("sel_courses") || course_ids;
             allPromises = Promise.all(fetchPosts());
         }
 
@@ -66,10 +74,21 @@
         {/if}
         <div class="flex-grow flex flex-col justify-start items-center mx-6">
             {#await allPromises}
-                <div>
-                    {#each { length: 4 } as _}
-                        <span class="loading loading-ring loading-lg" />
-                    {/each}
+                <div class="flex flex-col justify-center items-center">
+                    <span class="block"
+                        >Fetched posts from {posts_fetched} / {total_courses} courses</span
+                    >
+                    {#if posts_fetched > 0}
+                        <progress
+                            class="progress progress-success w-56 md:w-96"
+                            value={percentage_fetched}
+                            max="100"
+                        />
+                    {:else}
+                        <progress
+                            class="progress progress-success w-56 md:w-72"
+                        />
+                    {/if}
                 </div>
             {/await}
             <div class="w-full">

@@ -9,6 +9,15 @@ export function get_courses() {
     return data.courses
 }
 
+export async function fetch_courses() {
+    const fetched_courses = get_courses().slice(0, 10)
+    const courses: any = {}
+
+    fetched_courses.forEach((course) => (courses[course.id] = course))
+    await delay(2000)
+    return courses
+}
+
 const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "short",
@@ -51,14 +60,12 @@ export const localStore = {
         if (!browser || !key) return fallback
         let value = localStorage.getItem(key)
         if (!value) return fallback
-        if (value === "true") return true
-        if (value === "false") return false
-        if (value[0] == "{") return JSON.parse(value)
-        return value
+        return JSON.parse(value)
     },
 
     set: (key: string, value: any) => {
         if (!browser || !value) return
+        if (value instanceof Array && value.length == 0) return
         if (typeof value === "object") {
             value = JSON.stringify(value)
         }

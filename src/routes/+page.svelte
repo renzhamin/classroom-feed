@@ -6,6 +6,10 @@
     import SideBar from "./SideBar.svelte";
     import { all_courses, sel_courses, sidebar_visible } from "$lib/store";
     import { localStore } from "$lib/helpers";
+    import type { PageData } from "./$types";
+    export let data: PageData;
+    const course_promise = data.streamed.courses;
+    let course_promise_resolved = false;
 
     let allPosts: Post[] = [];
     let filteredPosts: Post[] = [];
@@ -14,21 +18,61 @@
 
     $: percentage_fetched = ~~((posts_fetched / total_courses) * 100);
 
+    function check_for_course_change(new_arr: any) {
+        if (!new_arr || !$all_courses) return null;
+        const added: Array<string> = [];
+        const removed: Set<string> = new Set();
+
+        // remove unenrolled courses
+        Object.entries($all_courses).map((entry) => {
+            const id = entry[0];
+            if (!new_arr[id]) {
+                delete $all_courses[id];
+                removed.add(id);
+            }
+        });
+
+        // add new courses
+        Object.entries(new_arr).map((entry) => {
+            const id = entry[0];
+            const course: any = entry[1];
+
+            if (!$all_courses[id]) {
+                added.push(id);
+                $all_courses[id] = course;
+            }
+        });
+
+        if (removed.size) {
+            $sel_courses = $sel_courses.filter((id) => !removed.has(id));
+        }
+
+        if (added.length) {
+            added.forEach((id) => $sel_courses.push(id));
+            $sel_courses = $sel_courses;
+        }
+
+        if (removed.size || added.length) {
+            localStore.set("all_courses", $all_courses);
+        }
+
+        return added;
+    }
+
     async function fetchData(courseId: string) {
         let data: any = await fetch(`/api/posts/${courseId}`);
         data = await data.json();
         allPosts = allPosts.concat(data.data);
-        allPosts.sort((a, b) => {
+        allPosts = allPosts.sort((a, b) => {
             return a.updateTime < b.updateTime ? 1 : -1;
         });
-        allPosts = allPosts;
         posts_fetched += 1;
     }
 
-    function fetchPosts() {
+    function fetchPosts(courses: Array<string>) {
         const promises: Promise<void>[] = [];
-        Object.keys($all_courses).forEach((courseId) => {
-            promises.push(fetchData(courseId.toString()));
+        courses.forEach((courseId) => {
+            promises.push(fetchData(courseId));
         });
         return promises;
     }
@@ -36,26 +80,23 @@
 
     onMount(() => {
         const all_courses_saved = localStore.get("all_courses");
-        if (!all_courses_saved) {
-            fetch("/api/courses")
-                .then((data) => data.json())
-                .then((data) => {
-                    $all_courses = data.data;
-                    const course_ids = Object.keys(data.data);
-                    $sel_courses = course_ids;
-                    total_courses = course_ids.length;
-                    localStore.set("all_courses", data.data);
-                    allPromises = Promise.all(fetchPosts());
-                });
-        } else {
+        if (all_courses_saved) {
             $all_courses = all_courses_saved;
             const course_ids = Object.keys($all_courses);
             total_courses = course_ids.length;
-            $sel_courses = localStore.get("sel_courses") || course_ids;
-            allPromises = Promise.all(fetchPosts());
+            $sel_courses = localStore.get("sel_courses", false) || course_ids;
+            allPromises = Promise.all(fetchPosts(Object.keys($all_courses)));
         }
 
         $sidebar_visible = localStore.get("sidebar_visible", true);
+
+        course_promise.then((data: any) => {
+            course_promise_resolved = true;
+            const new_courses = check_for_course_change(data);
+            if (new_courses.length) {
+                fetchPosts(new_courses);
+            }
+        });
     });
 
     $: {
@@ -73,6 +114,10 @@
             <SideBar />
         {/if}
         <div class="flex-grow flex flex-col justify-start items-center mx-6">
+            {#await course_promise}
+                <span class="animate-pulse">Checking classroom enrollments</span
+                >
+            {/await}
             {#await allPromises}
                 <div class="flex flex-col justify-center items-center">
                     <span class="block"

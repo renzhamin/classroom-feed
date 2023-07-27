@@ -1,4 +1,5 @@
 import { data } from "./data"
+import { browser } from "$app/environment"
 
 export function get_announcements(courseId: string) {
     return data.announcements.filter((item) => item.courseId === courseId)
@@ -43,4 +44,24 @@ export function get_course_map() {
         mp.set(course.id, { name: course.name })
     })
     return mp
+}
+
+export const localStore = {
+    get: (key: string, fallback?: any) => {
+        if (!browser) return fallback
+        let value = localStorage.getItem(key)
+        if (!value) return fallback
+        if (value === "true") return true
+        if (value === "false") return false
+        if (typeof value === "object") return JSON.parse(value)
+        return value
+    },
+
+    set: (key: string, value: any) => {
+        if (!browser) return
+        if (typeof value === "object") {
+            value = JSON.stringify(value)
+        }
+        localStorage.setItem(key, value)
+    },
 }

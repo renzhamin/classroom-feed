@@ -40,7 +40,7 @@
 
 <body class="flex flex-col w-full">
     <NavBar />
-    <main class="flex flex-col md:flex-row">
+    <main class="flex flex-col md:flex-row h-screen">
         {#if $sidebar_visible}
             <SideBar />
         {/if}

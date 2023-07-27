@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { slide } from "svelte/transition";
+    import { localStore } from "$lib/helpers";
     import { sidebar_visible } from "$lib/store";
     import { onMount } from "svelte";
 
@@ -14,6 +16,10 @@
             theme = document.body.dataset.theme = localStorage.theme;
         }
     });
+
+    $: {
+        localStore.set("sidebar_visible", $sidebar_visible);
+    }
 
     function handle_theme_change() {
         theme = theme == "light" ? "dark" : "light";
@@ -33,13 +39,13 @@
                     .getElementById("menusvg")
                     ?.classList.toggle("rotate-180");
             }}
-            class="btn btn-square btn-ghost"
+            class="ml-2 p-4 group"
         >
             <svg
                 id="menusvg"
-                class="w-6 h-6 duration-200"
+                class="w-6 h-6 transition-transform group-hover:fill-info"
                 class:fill-white={theme == "dark"}
-                class:rotate-180={!sidebar_visible}
+                class:rotate-180={!$sidebar_visible}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"
                 ><path
@@ -48,13 +54,11 @@
             >
         </button>
 
-        <button
-            on:click={handle_theme_change}
-            class="btn btn-square btn-ghost duration-500"
-        >
+        <button on:click={handle_theme_change} class="group p-4">
             {#if theme === "dark"}
                 <svg
-                    class="fill-white h-6 w-6"
+                    transition:slide={{ axis: "y" }}
+                    class="fill-white h-6 w-6 group-hover:fill-info"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 512 512"
                     ><path
@@ -63,7 +67,8 @@
                 >
             {:else}
                 <svg
-                    class="h-6 w-6"
+                    transition:slide={{ axis: "y" }}
+                    class="h-6 w-6 group-hover:fill-info"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 512 512"
                     ><path

@@ -1,13 +1,17 @@
 <script lang="ts">
     import { fly } from "svelte/transition";
     import { course_map, sel_courses, all_courses } from "$lib/store";
+    import { localStore } from "$lib/helpers";
+
+    $: {
+        localStore.set("sel_courses", $sel_courses);
+    }
 </script>
 
 <aside
     in:fly={{ x: -200, duration: 500 }}
     out:fly={{
         x: -200,
-        y: 0,
         duration: 200,
     }}
     class="flex flex-col justify-center items-center md:sticky top-8 w-full md:w-72 h-screen p-4 bg-base-200"

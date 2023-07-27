@@ -20,6 +20,13 @@
         allPosts = allPosts;
     }
 
+    function fetchPosts() {
+        const promises: Promise<void>[] = [];
+        Object.keys($all_courses).forEach((courseId) => {
+            promises.push(fetchData(courseId.toString()));
+        });
+        return promises;
+    }
     let allPromises: Promise<void[]>;
 
     onMount(() => {
@@ -29,22 +36,18 @@
                 .then((data) => data.json())
                 .then((data) => {
                     $all_courses = data.data;
-                    console.log("FETCHED COURSES");
+                    $sel_courses = Object.keys(data.data);
                     localStore.set("all_courses", data.data);
+                    allPromises = Promise.all(fetchPosts());
                 });
         } else {
             $all_courses = all_courses_saved;
+            $sel_courses =
+                localStore.get("sel_courses") || Object.keys($all_courses);
+            allPromises = Promise.all(fetchPosts());
         }
 
-        $sel_courses = localStore.get("sel_courses", Object.keys($all_courses));
         $sidebar_visible = localStore.get("sidebar_visible", true);
-
-        const promises: Promise<void>[] = [];
-        Object.keys($all_courses).forEach((courseId) => {
-            promises.push(fetchData(courseId.toString()));
-        });
-
-        allPromises = Promise.all(promises);
     });
 
     $: {

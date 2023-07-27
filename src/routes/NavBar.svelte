@@ -79,7 +79,9 @@
         </button>
     </div>
     <div class="mr-auto">
-        <span class="normal-case text-xl mx-auto">Classroom Feed</span>
+        <span class="normal-case text-xl mx-auto hidden md:inline"
+            >Classroom Feed</span
+        >
     </div>
     <div>
         <button class="btn btn-outline btn-sm">Log Out</button>

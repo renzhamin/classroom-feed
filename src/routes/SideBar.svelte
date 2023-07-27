@@ -8,7 +8,7 @@
 
 <aside
     in:fly={{ x: -200, duration: 500 }}
-    out:fly={{ x: -200, duration: 200 }}
+    out:fly={{ x: -200, duration: 400 }}
     class="flex flex-col gap-y-2 justify-center items-center md:sticky md:top-10 w-full md:w-72 h-screen p-4 bg-base-200"
 >
     <span class="font-bold mb-2">Course Filters</span>

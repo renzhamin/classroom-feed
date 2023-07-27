@@ -15,11 +15,14 @@
             {format_date(item.updateTime)}
         </div>
         <div class="card-actions justify-end ml-auto">
-            <a class="link" href={item.alternateLink} target="_blank">
+            <a
+                class="link w-4 h-4 md:scale-125"
+                href={item.alternateLink}
+                target="_blank"
+            >
                 <svg
                     class="fill-accent hover:scale-125"
                     xmlns="http://www.w3.org/2000/svg"
-                    height="1em"
                     viewBox="0 0 512 512"
                 >
                     <path

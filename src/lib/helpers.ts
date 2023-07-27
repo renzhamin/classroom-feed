@@ -48,17 +48,17 @@ export function get_course_map() {
 
 export const localStore = {
     get: (key: string, fallback?: any) => {
-        if (!browser) return fallback
+        if (!browser || !key) return fallback
         let value = localStorage.getItem(key)
         if (!value) return fallback
         if (value === "true") return true
         if (value === "false") return false
-        if (typeof value === "object") return JSON.parse(value)
+        if (value[0] == "{") return JSON.parse(value)
         return value
     },
 
     set: (key: string, value: any) => {
-        if (!browser) return
+        if (!browser || !value) return
         if (typeof value === "object") {
             value = JSON.stringify(value)
         }

@@ -4,7 +4,11 @@ import type { RequestHandler } from "./$types"
 
 export const GET = (async ({ setHeaders }) => {
     /* await delay(3000) */
-    const courses = get_courses()
+    const fetched_courses = get_courses()
+    const courses: any = {}
+
+    fetched_courses.forEach((course) => (courses[course.id] = course))
+
     setHeaders({
         "cache-control": "public, max-age=60",
     })

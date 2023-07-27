@@ -8,13 +8,10 @@
 
 <aside
     in:fly={{ x: -200, duration: 500 }}
-    out:fly={{
-        x: -200,
-        duration: 200,
-    }}
-    class="flex flex-col justify-center items-center md:sticky md:top-32 w-full md:w-72 h-screen p-4 bg-base-200"
+    out:fly={{ x: -200, duration: 200 }}
+    class="flex flex-col gap-y-2 justify-center items-center md:sticky md:top-10 w-full md:w-72 h-screen p-4 bg-base-200"
 >
-    <span class="font-bold my-4">Course Filters</span>
+    <span class="font-bold mb-2">Course Filters</span>
     <div class="flex justify-between gap-2">
         <button
             class="btn btn-outline btn-xs flex-grow"

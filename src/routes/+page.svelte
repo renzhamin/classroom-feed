@@ -55,36 +55,32 @@
     }
 </script>
 
-<html lang="en" class="bg-base-100">
-    <body class="flex flex-col w-full">
-        <NavBar />
-        <main class="flex flex-col md:flex-row h-screen">
-            {#if $sidebar_visible}
-                <SideBar />
-            {/if}
-            <div
-                class="flex-grow flex flex-col justify-start items-center mx-6"
-            >
-                {#await allPromises}
-                    <div>
-                        {#each { length: 4 } as _}
-                            <span class="loading loading-ring loading-lg" />
-                        {/each}
-                    </div>
-                {/await}
-                <div class="w-full">
-                    {#each filteredPosts as item (item.id)}
-                        <div
-                            class="card bg-base-100 shadow-xl shadow-base-300 my-4"
-                        >
-                            <PostCard
-                                {item}
-                                course_name={$all_courses[item.courseId].name}
-                            />
-                        </div>
+<body class="flex flex-col w-full">
+    <NavBar />
+    <main class="flex flex-col md:flex-row">
+        {#if $sidebar_visible}
+            <SideBar />
+        {/if}
+        <div class="flex-grow flex flex-col justify-start items-center mx-6">
+            {#await allPromises}
+                <div>
+                    {#each { length: 4 } as _}
+                        <span class="loading loading-ring loading-lg" />
                     {/each}
                 </div>
+            {/await}
+            <div class="w-full">
+                {#each filteredPosts as item (item.id)}
+                    <div
+                        class="card bg-base-100 shadow-xl shadow-base-300 my-4"
+                    >
+                        <PostCard
+                            {item}
+                            course_name={$all_courses[item.courseId].name}
+                        />
+                    </div>
+                {/each}
             </div>
-        </main>
-    </body>
-</html>
+        </div>
+    </main>
+</body>

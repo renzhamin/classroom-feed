@@ -4,12 +4,11 @@
     import PostCard from "./PostCard.svelte";
     import NavBar from "./NavBar.svelte";
     import SideBar from "./SideBar.svelte";
-    import { all_courses, sel_courses, sidebar_visible } from "$lib/store";
+    import { course_map, sel_courses, sidebar_visible } from "$lib/store";
     import { localStore } from "$lib/helpers";
     import type { PageData } from "./$types";
     export let data: PageData;
     const course_promise = data.streamed.courses;
-    let course_promise_resolved = false;
 
     let allPosts: Post[] = [];
     let filteredPosts: Post[] = [];
@@ -18,28 +17,28 @@
 
     $: percentage_fetched = ~~((posts_fetched / total_courses) * 100);
 
-    function check_for_course_change(new_arr: any) {
-        if (!new_arr || !$all_courses) return null;
+    function check_for_course_change(new_arr: any): Array<string> {
+        if (!new_arr) return [];
         const added: Array<string> = [];
         const removed: Set<string> = new Set();
 
         // remove unenrolled courses
-        Object.entries($all_courses).map((entry) => {
-            const id = entry[0];
+        for (const [id, _] of $course_map) {
             if (!new_arr[id]) {
-                delete $all_courses[id];
+                $course_map.delete(id);
+                total_courses -= 1;
                 removed.add(id);
             }
-        });
+        }
 
         // add new courses
         Object.entries(new_arr).map((entry) => {
             const id = entry[0];
             const course: any = entry[1];
 
-            if (!$all_courses[id]) {
+            if (!$course_map.has(id)) {
                 added.push(id);
-                $all_courses[id] = course;
+                $course_map.set(id, course);
             }
         });
 
@@ -53,7 +52,7 @@
         }
 
         if (removed.size || added.length) {
-            localStore.set("all_courses", $all_courses);
+            localStore.set("course_map", $course_map);
         }
 
         return added;
@@ -76,25 +75,25 @@
         });
         return promises;
     }
-    let allPromises: Promise<void[]>;
+    let posts_promises: Promise<void[]>;
 
     onMount(() => {
-        const all_courses_saved = localStore.get("all_courses");
-        if (all_courses_saved) {
-            $all_courses = all_courses_saved;
-            const course_ids = Object.keys($all_courses);
+        const saved_course_map = localStore.get("course_map");
+        if (saved_course_map) {
+            $course_map = new Map(saved_course_map);
+            const course_ids = [...$course_map.keys()];
             total_courses = course_ids.length;
             $sel_courses = localStore.get("sel_courses", false) || course_ids;
-            allPromises = Promise.all(fetchPosts(Object.keys($all_courses)));
+            posts_promises = Promise.all(fetchPosts(course_ids));
         }
 
         $sidebar_visible = localStore.get("sidebar_visible", true);
 
         course_promise.then((data: any) => {
-            course_promise_resolved = true;
             const new_courses = check_for_course_change(data);
             if (new_courses.length) {
-                fetchPosts(new_courses);
+                posts_promises = Promise.all(fetchPosts(new_courses));
+                total_courses = $course_map.size;
             }
         });
     });
@@ -118,7 +117,7 @@
                 <span class="animate-pulse">Checking classroom enrollments</span
                 >
             {/await}
-            {#await allPromises}
+            {#await posts_promises}
                 <div class="flex flex-col justify-center items-center">
                     <span class="block"
                         >Fetched posts from {posts_fetched} / {total_courses} courses</span
@@ -143,7 +142,7 @@
                     >
                         <PostCard
                             {item}
-                            course_name={$all_courses[item.courseId].name}
+                            course_name={$course_map.get(item.courseId).name}
                         />
                     </div>
                 {/each}

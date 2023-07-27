@@ -1,9 +1,9 @@
 <script lang="ts">
     import { fly } from "svelte/transition";
-    import { sel_courses, all_courses } from "$lib/store";
+    import { sel_courses, course_map } from "$lib/store";
     import { localStore } from "$lib/helpers";
 
-    $: localStore.set("sel_courses", $sel_courses);
+    $: localStore.set("sel_courses", [...new Set($sel_courses)]);
 </script>
 
 <aside
@@ -16,7 +16,7 @@
         <button
             class="btn btn-outline btn-xs flex-grow"
             on:click={() => {
-                $sel_courses = Object.keys($all_courses);
+                $sel_courses = [...$course_map.keys()];
             }}>Select All</button
         >
         <button
@@ -24,13 +24,14 @@
                 $sel_courses = [];
             }}
             class="btn btn-outline btn-xs flex-grow float-right"
-            >Deselect All</button
         >
+            Deselect All
+        </button>
     </div>
 
     <div class="overflow-scroll w-full h-full scroll-green px-4">
-        {#if $all_courses}
-            {#each Object.entries($all_courses) as [id, course]}
+        {#if $course_map}
+            {#each $course_map as [id, course]}
                 <div class="form-control">
                     <label class="cursor-pointer label">
                         <span class="label-text">{course.name}</span>

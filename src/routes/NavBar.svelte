@@ -17,9 +17,7 @@
         }
     });
 
-    $: {
-        localStore.set("sidebar_visible", $sidebar_visible);
-    }
+    $: localStore.set("sidebar_visible", $sidebar_visible);
 
     function handle_theme_change() {
         theme = theme == "light" ? "dark" : "light";

@@ -6,9 +6,8 @@
     import SideBar from "./SideBar.svelte";
     import { course_map, sel_courses, sidebar_visible } from "$lib/store";
     import { localStore } from "$lib/helpers";
-    import type { PageData } from "./$types";
-    export let data: PageData;
-    const course_promise = data.streamed.courses;
+    export let data;
+    const streamed_course = data.streamed.courses;
 
     let allPosts: Post[] = [];
     let filteredPosts: Post[] = [];
@@ -89,7 +88,7 @@
 
         $sidebar_visible = localStore.get("sidebar_visible", true);
 
-        course_promise.then((data: any) => {
+        streamed_course.then((data: any) => {
             const new_courses = check_for_course_change(data);
             if (new_courses.length) {
                 posts_promises = Promise.all(fetchPosts(new_courses));
@@ -113,7 +112,7 @@
             <SideBar />
         {/if}
         <div class="flex-grow flex flex-col justify-start items-center mx-6">
-            {#await course_promise}
+            {#await streamed_course}
                 <span class="animate-pulse">Checking classroom enrollments</span
                 >
             {/await}

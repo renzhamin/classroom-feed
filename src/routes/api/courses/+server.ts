@@ -1,8 +1,7 @@
 import { delay, fetch_courses, get_courses } from "$lib/helpers"
 import { json } from "@sveltejs/kit"
-import type { RequestHandler } from "./$types"
 
-export const GET = (async ({ setHeaders }) => {
+export const GET = async ({ setHeaders }) => {
     /* await delay(3000) */
 
     /* setHeaders({ */
@@ -10,4 +9,4 @@ export const GET = (async ({ setHeaders }) => {
     /* }) */
     const courses = await fetch_courses()
     return json({ data: courses }, { status: 200 })
-}) satisfies RequestHandler
+}

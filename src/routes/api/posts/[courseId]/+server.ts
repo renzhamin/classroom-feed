@@ -1,10 +1,9 @@
-import { delay, get_announcements } from "$lib/helpers"
-import { json, error } from "@sveltejs/kit"
 import type { Post } from "$lib/data"
+import { delay, get_announcements } from "$lib/helpers"
+import { json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 
 export const GET = (async ({ params, setHeaders, cookies }) => {
-    /* throw error(429, { message: "rate exceeded" }) */
     await delay(3000)
     let courseId = Number(params.courseId)
     const posts: Post[] = get_announcements(courseId.toString()).slice(0, 1)

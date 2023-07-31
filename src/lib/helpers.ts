@@ -33,7 +33,7 @@ export function format_date(inputDateString: string) {
     const currentLocale = Intl.DateTimeFormat().resolvedOptions().locale
     const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
-    const formatter = new Intl.DateTimeFormat(currentLocale, {
+    const formatter = Intl.DateTimeFormat(currentLocale, {
         ...options,
         timeZone: currentTimeZone,
     })

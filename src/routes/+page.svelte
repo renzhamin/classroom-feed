@@ -13,7 +13,7 @@
     let filtered_posts: Post[] = [];
     let total_courses = 0;
     let posts_fetched = 0;
-    let is_rate_exceeded = false;
+    let fetch_error = "";
     let show_has_new_posts = false;
 
     $: percentage_fetched = ~~((posts_fetched / total_courses) * 100);
@@ -63,7 +63,7 @@
         let data: any = await fetch(`/api/posts/${courseId}`);
         if (!data.ok) {
             if (data.status == 429) {
-                is_rate_exceeded = true;
+                fetch_error = await data.json().message;
             }
             return;
         }
@@ -107,7 +107,9 @@
             .then((data) => {
                 if (!data.ok) {
                     if (data.status == 429) {
-                        is_rate_exceeded = true;
+                        data.json().then(
+                            (body) => (fetch_error = body.message)
+                        );
                         throw new Error("Rate Limit Exceeded");
                     }
                     throw new Error("fetching courses failed");
@@ -158,8 +160,8 @@
                 <span class="animate-pulse">Checking classroom enrollments</span
                 >
             {/await}
-            {#if is_rate_exceeded}
-                <span class="text-red-500">Rate Limit Exceeded</span>
+            {#if !!fetch_error}
+                <span class="text-red-500">{fetch_error}</span>
             {/if}
             {#if show_has_new_posts}
                 <span

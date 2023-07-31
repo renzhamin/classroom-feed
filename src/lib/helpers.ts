@@ -14,7 +14,7 @@ export async function fetch_courses() {
     const courses: any = {}
 
     fetched_courses.forEach((course) => (courses[course.id] = course))
-    await delay(1000)
+    await delay(5000)
     return courses
 }
 

@@ -6,8 +6,7 @@
     import SideBar from "./SideBar.svelte";
     import { course_map, sel_courses, sidebar_visible } from "$lib/store";
     import { localStore } from "$lib/helpers";
-    export let data;
-    const streamed_course = data.streamed.courses;
+    let courses_promise: Promise<void>;
 
     let all_posts: Post[] = [];
     let filtered_posts: Post[] = [];
@@ -95,24 +94,43 @@
             const course_ids = [...$course_map.keys()];
             total_courses = course_ids.length;
             $sel_courses = localStore.get("sel_courses", false) || course_ids;
-            posts_promises = Promise.allSettled(fetchPosts(course_ids));
+            /* posts_promises = Promise.allSettled(fetchPosts(course_ids)); */
         }
 
-        $sidebar_visible = localStore.get("sidebar_visible", true);
+        courses_promise = fetch("/api/courses")
+            .then((data) => {
+                if (!data.ok) {
+                    if (data.status == 429) {
+                        is_rate_exceeded = true;
+                        throw new Error("Rate Limit Exceeded");
+                    }
+                    throw new Error("fetching courses failed");
+                }
 
-        streamed_course.then((data: any) => {
-            const new_courses = check_for_course_change(data);
-            if (new_courses.length) {
-                posts_promises = Promise.allSettled(fetchPosts(new_courses));
+                return data;
+            })
+            .then((data) => data.json())
+            .then((data) => {
+                if (!data.data) return;
+                const new_courses = check_for_course_change(data.data);
                 total_courses = $course_map.size;
-            }
-        });
+                if (new_courses.length) {
+                    posts_promises = Promise.allSettled(
+                        fetchPosts(new_courses)
+                    );
 
-        posts_promises.then(() => {
-            if (all_posts?.length) {
-                localStore.set("all_posts", all_posts.slice(0, 10));
-            }
-        });
+                    posts_promises.then(() => {
+                        if (all_posts?.length) {
+                            localStore.set("all_posts", all_posts);
+                        }
+                    });
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+
+        $sidebar_visible = localStore.get("sidebar_visible", true);
     });
 
     $: if (all_posts?.length) {
@@ -130,7 +148,7 @@
             <SideBar />
         {/if}
         <div class="flex-grow flex flex-col justify-start items-center mx-6">
-            {#await streamed_course}
+            {#await courses_promise}
                 <span class="animate-pulse">Checking classroom enrollments</span
                 >
             {/await}

@@ -1,7 +1,8 @@
 import { delay, fetch_courses, get_courses } from "$lib/helpers"
-import { json } from "@sveltejs/kit"
+import { json, error } from "@sveltejs/kit"
 
 export const GET = async ({ setHeaders }) => {
+    /* throw error(429) */
     /* await delay(3000) */
 
     /* setHeaders({ */

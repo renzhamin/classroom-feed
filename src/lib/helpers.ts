@@ -73,3 +73,16 @@ export const localStore = {
         localStorage.setItem(key, value)
     },
 }
+
+export async function set_fetch_error(data: any) {
+    let fetch_error = ""
+    if (data.status == 429) {
+        data = await data.json()
+        fetch_error = `Rate limitied until ${format_date(data.reset)}`
+    } else if (data.status == 503) {
+        data = await data.json()
+        fetch_error = data.message
+    }
+
+    return fetch_error
+}

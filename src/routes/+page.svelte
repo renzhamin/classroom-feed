@@ -6,7 +6,7 @@
     import NavBar from "./NavBar.svelte";
     import SideBar from "./SideBar.svelte";
     import { course_map, sel_courses, sidebar_visible } from "$lib/store";
-    import { localStore } from "$lib/helpers";
+    import { set_fetch_error, localStore } from "$lib/helpers";
     let courses_promise: Promise<void>;
 
     let all_posts: Post[] = [];
@@ -60,27 +60,29 @@
     }
 
     async function fetchData(courseId: string) {
-        let data: any = await fetch(`/api/posts/${courseId}`);
-        if (!data.ok) {
-            if (data.status == 429) {
-                fetch_error = await data.json().message;
+        try {
+            let data: any = await fetch(`/api/posts/${courseId}`);
+            if (!data.ok) {
+                fetch_error = await set_fetch_error(data);
+                return;
             }
-            return;
+            data = await data.json();
+            if (data.updated == true) {
+                show_has_new_posts = true;
+                setTimeout(() => (show_has_new_posts = false), 4000);
+            }
+            const new_posts = data.data as Post[];
+            all_posts = all_posts?.filter(
+                (post) => !new_posts.find((new_post) => new_post.id === post.id)
+            );
+            all_posts = all_posts.concat(new_posts);
+            all_posts = all_posts.sort((a, b) => {
+                return a.updateTime < b.updateTime ? 1 : -1;
+            });
+            posts_fetched += 1;
+        } catch(err){
+            console.error(err)
         }
-        data = await data.json();
-        if (data.updated == true) {
-            show_has_new_posts = true;
-            setTimeout(() => (show_has_new_posts = false), 4000);
-        }
-        const new_posts = data.data as Post[];
-        all_posts = all_posts?.filter(
-            (post) => !new_posts.find((new_post) => new_post.id === post.id)
-        );
-        all_posts = all_posts.concat(new_posts);
-        all_posts = all_posts.sort((a, b) => {
-            return a.updateTime < b.updateTime ? 1 : -1;
-        });
-        posts_fetched += 1;
     }
 
     function fetchPosts(courses: Array<string>) {
@@ -90,6 +92,7 @@
         });
         return promises;
     }
+
     let posts_promises: Promise<PromiseSettledResult<void>[]>;
 
     onMount(() => {
@@ -106,12 +109,7 @@
         courses_promise = fetch("/api/courses")
             .then((data) => {
                 if (!data.ok) {
-                    if (data.status == 429) {
-                        data.json().then(
-                            (body) => (fetch_error = body.message)
-                        );
-                        throw new Error("Rate Limit Exceeded");
-                    }
+                    set_fetch_error(data).then((text)=>fetch_error = text);
                     throw new Error("fetching courses failed");
                 }
 

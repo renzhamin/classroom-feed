@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { slide } from "svelte/transition";
     import type { Post } from "$lib/data";
     import { onMount } from "svelte";
     import PostCard from "./PostCard.svelte";
@@ -13,6 +14,7 @@
     let total_courses = 0;
     let posts_fetched = 0;
     let is_rate_exceeded = false;
+    let show_has_new_posts = false;
 
     $: percentage_fetched = ~~((posts_fetched / total_courses) * 100);
 
@@ -66,6 +68,10 @@
             return;
         }
         data = await data.json();
+        if (data.updated == true) {
+            show_has_new_posts = true;
+            setTimeout(() => (show_has_new_posts = false), 4000);
+        }
         const new_posts = data.data as Post[];
         all_posts = all_posts?.filter(
             (post) => !new_posts.find((new_post) => new_post.id === post.id)
@@ -94,7 +100,7 @@
             const course_ids = [...$course_map.keys()];
             total_courses = course_ids.length;
             $sel_courses = localStore.get("sel_courses", false) || course_ids;
-            /* posts_promises = Promise.allSettled(fetchPosts(course_ids)); */
+            posts_promises = Promise.allSettled(fetchPosts(course_ids));
         }
 
         courses_promise = fetch("/api/courses")
@@ -155,6 +161,13 @@
             {#if is_rate_exceeded}
                 <span class="text-red-500">Rate Limit Exceeded</span>
             {/if}
+            {#if show_has_new_posts}
+                <span
+                    transition:slide={{ duration: 1000 }}
+                    class="text-green-500">There are new posts</span
+                >
+            {/if}
+
             {#await posts_promises}
                 <div class="flex flex-col justify-center items-center">
                     <span class="block"

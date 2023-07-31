@@ -24,5 +24,9 @@
     "typescript": "^5.0.0",
     "vite": "^4.4.2"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@upstash/ratelimit": "^0.4.3",
+    "@upstash/redis": "^1.22.0"
+  }
 }

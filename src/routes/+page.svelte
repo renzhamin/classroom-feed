@@ -9,10 +9,11 @@
     export let data;
     const streamed_course = data.streamed.courses;
 
-    let allPosts: Post[] = [];
-    let filteredPosts: Post[] = [];
+    let all_posts: Post[] = [];
+    let filtered_posts: Post[] = [];
     let total_courses = 0;
     let posts_fetched = 0;
+    let is_rate_exceeded = false;
 
     $: percentage_fetched = ~~((posts_fetched / total_courses) * 100);
 
@@ -59,9 +60,19 @@
 
     async function fetchData(courseId: string) {
         let data: any = await fetch(`/api/posts/${courseId}`);
+        if (!data.ok) {
+            if (data.status == 429) {
+                is_rate_exceeded = true;
+            }
+            return;
+        }
         data = await data.json();
-        allPosts = allPosts.concat(data.data);
-        allPosts = allPosts.sort((a, b) => {
+        const new_posts = data.data as Post[];
+        all_posts = all_posts?.filter(
+            (post) => !new_posts.find((new_post) => new_post.id === post.id)
+        );
+        all_posts = all_posts.concat(new_posts);
+        all_posts = all_posts.sort((a, b) => {
             return a.updateTime < b.updateTime ? 1 : -1;
         });
         posts_fetched += 1;
@@ -74,16 +85,17 @@
         });
         return promises;
     }
-    let posts_promises: Promise<void[]>;
+    let posts_promises: Promise<PromiseSettledResult<void>[]>;
 
     onMount(() => {
+        all_posts = localStore.get("all_posts", []);
         const saved_course_map = localStore.get("course_map");
         if (saved_course_map) {
             $course_map = new Map(saved_course_map);
             const course_ids = [...$course_map.keys()];
             total_courses = course_ids.length;
             $sel_courses = localStore.get("sel_courses", false) || course_ids;
-            posts_promises = Promise.all(fetchPosts(course_ids));
+            posts_promises = Promise.allSettled(fetchPosts(course_ids));
         }
 
         $sidebar_visible = localStore.get("sidebar_visible", true);
@@ -91,15 +103,21 @@
         streamed_course.then((data: any) => {
             const new_courses = check_for_course_change(data);
             if (new_courses.length) {
-                posts_promises = Promise.all(fetchPosts(new_courses));
+                posts_promises = Promise.allSettled(fetchPosts(new_courses));
                 total_courses = $course_map.size;
+            }
+        });
+
+        posts_promises.then(() => {
+            if (all_posts?.length) {
+                localStore.set("all_posts", all_posts.slice(0, 10));
             }
         });
     });
 
-    $: {
+    $: if (all_posts?.length) {
         const course_set = new Set($sel_courses);
-        filteredPosts = allPosts.filter((post) =>
+        filtered_posts = all_posts.filter((post) =>
             course_set.has(post.courseId)
         );
     }
@@ -116,6 +134,9 @@
                 <span class="animate-pulse">Checking classroom enrollments</span
                 >
             {/await}
+            {#if is_rate_exceeded}
+                <span class="text-red-500">Rate Limit Exceeded</span>
+            {/if}
             {#await posts_promises}
                 <div class="flex flex-col justify-center items-center">
                     <span class="block"
@@ -133,9 +154,11 @@
                         />
                     {/if}
                 </div>
+            {:catch}
+                <div><span>Failed to fetch posts</span></div>
             {/await}
             <div class="w-full">
-                {#each filteredPosts as item (item.id)}
+                {#each filtered_posts as item (item.id)}
                     <div
                         class="card bg-base-100 shadow-xl shadow-base-300 my-4"
                     >

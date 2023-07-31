@@ -10,11 +10,11 @@ export function get_courses() {
 }
 
 export async function fetch_courses() {
-    const fetched_courses = get_courses()
+    const fetched_courses = get_courses().slice(0, 5)
     const courses: any = {}
 
     fetched_courses.forEach((course) => (courses[course.id] = course))
-    await delay(2000)
+    await delay(1000)
     return courses
 }
 

@@ -17,8 +17,6 @@
         }
     });
 
-    $: localStore.set("sidebar_visible", $sidebar_visible);
-
     function handle_theme_change() {
         theme = theme == "light" ? "dark" : "light";
         localStorage.theme = theme;
@@ -33,6 +31,7 @@
         <button
             on:click={() => {
                 $sidebar_visible = !$sidebar_visible;
+                localStore.set("sidebar_visible", $sidebar_visible);
                 document
                     .getElementById("menusvg")
                     ?.classList.toggle("rotate-180");

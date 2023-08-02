@@ -10,7 +10,7 @@ export function get_courses() {
 }
 
 export async function fetch_courses() {
-    const fetched_courses = get_courses().slice(0, 5)
+    const fetched_courses = get_courses().slice(1, 2)
     const courses: any = {}
 
     fetched_courses.forEach((course) => (courses[course.id] = course))
@@ -64,7 +64,7 @@ export const localStore = {
     },
 
     set: (key: string, value: any) => {
-        if (!browser || !value) return
+        if (!browser || (!value && !(typeof value === "boolean"))) return
         if (value instanceof Array && value.length == 0) return
         if (value instanceof Map) value = [...value]
         if (typeof value === "object") {

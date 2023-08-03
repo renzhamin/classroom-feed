@@ -1,22 +1,4 @@
-import { data } from "./data"
 import { browser } from "$app/environment"
-
-export function get_announcements(courseId: string) {
-    return data.announcements.filter((item) => item.courseId === courseId)
-}
-
-export function get_courses() {
-    return data.courses
-}
-
-export async function fetch_courses() {
-    const fetched_courses = get_courses().slice(1, 2)
-    const courses: any = {}
-
-    fetched_courses.forEach((course) => (courses[course.id] = course))
-    await delay(5000)
-    return courses
-}
 
 const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -41,18 +23,6 @@ export function format_date(inputDateString: string) {
     const formattedDate = formatter.format(dateObject)
 
     return formattedDate
-}
-
-export async function delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-export function get_course_map() {
-    const mp: Map<string, { name: string }> = new Map()
-    data.courses.forEach((course) => {
-        mp.set(course.id, { name: course.name })
-    })
-    return mp
 }
 
 export const localStore = {

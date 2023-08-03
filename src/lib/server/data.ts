@@ -8,16 +8,16 @@ const courses = [
         name: "Data Structure",
     },
     {
+        id: "5",
+        name: "Database Management",
+    },
+    {
         id: "3",
         name: "Web Development",
     },
     {
         id: "4",
         name: "Artificial Intelligence",
-    },
-    {
-        id: "5",
-        name: "Database Management",
     },
     {
         id: "6",
@@ -187,7 +187,7 @@ export const data: { announcements: Post[]; courses: Course[] } = {
         {
             courseId: "1",
             id: "1-1",
-            text: "This is nothing but a test announcement.",
+            text: "Reminder for class test #1\nDate: 26 July 2023 (Wednesday)\nTime: 02.00 PM to 02.30 PM\nSyllabus: All covered topics upto Week 4.\nRoom: 508 & 510",
             state: "PUBLISHED",
             alternateLink:
                 "https://classroom.google.com/c/NjE2NjI4MTA2NzEy/p/NjE2NjI5OTIxNDAz",
@@ -307,12 +307,12 @@ export const data: { announcements: Post[]; courses: Course[] } = {
         {
             courseId: "2",
             id: "2-1",
-            text: "The class is postponed to 2:45pm.",
+            text: "Todays class will start from 10:30 am\n Room no 301.",
             state: "PUBLISHED",
             alternateLink:
                 "https://classroom.google.com/c/NjE2NjI4MTA2NzEy/p/NjE2NjI5OTIxNDAz",
             creationTime: "2023-07-25T11:18:02.968Z",
-            updateTime: "2023-07-25T11:19:02.941Z",
+            updateTime: "2023-07-26T03:19:02.941Z",
             assigneeMode: "ALL_STUDENTS",
             creatorUserId: "102228857692621657049",
         },
@@ -583,12 +583,12 @@ export const data: { announcements: Post[]; courses: Course[] } = {
         {
             courseId: "5",
             id: "5-1",
-            text: "Welcome to Course 5! Lecture starts at 9 AM.",
+            text: "Hello Everyone!\n There will be no classes this week.\n However, next week you will give a project idea presentation on your Database project with your group.\n So take this week to prepare for that.\n",
             state: "PUBLISHED",
             alternateLink:
                 "https://classroom.google.com/c/course-5/announcement-1",
-            creationTime: "2023-08-12T09:00:00.000Z",
-            updateTime: "2023-08-12T09:00:00.000Z",
+            creationTime: "2023-07-22T09:00:00.000Z",
+            updateTime: "2023-07-25T02:00:00.000Z",
             assigneeMode: "ALL_STUDENTS",
             creatorUserId: "user-1",
         },

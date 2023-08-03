@@ -6,7 +6,7 @@
     import NavBar from "./NavBar.svelte";
     import SideBar from "./SideBar.svelte";
     import { course_map, sel_courses, sidebar_visible } from "$lib/store";
-    import { set_fetch_error, localStore } from "$lib/helpers";
+    import { set_fetch_error, localStore } from "$lib/client/helpers";
     let courses_promise: Promise<void>;
 
     let all_posts: Post[] = [];
@@ -80,8 +80,8 @@
                 return a.updateTime < b.updateTime ? 1 : -1;
             });
             posts_fetched += 1;
-        } catch(err){
-            console.error(err)
+        } catch (err) {
+            console.error(err);
         }
     }
 
@@ -109,7 +109,7 @@
         courses_promise = fetch("/api/courses")
             .then((data) => {
                 if (!data.ok) {
-                    set_fetch_error(data).then((text)=>fetch_error = text);
+                    set_fetch_error(data).then((text) => (fetch_error = text));
                     throw new Error("fetching courses failed");
                 }
 
@@ -147,59 +147,51 @@
     }
 </script>
 
-<body class="flex flex-col w-full">
-    <NavBar />
-    <main class="flex flex-col md:flex-row">
-        {#if $sidebar_visible}
-            <SideBar />
+<NavBar />
+<main class="flex flex-col md:flex-row">
+    {#if $sidebar_visible}
+        <SideBar />
+    {/if}
+    <div class="flex-grow flex flex-col justify-start items-center mx-6">
+        {#await courses_promise}
+            <span class="animate-pulse">Checking classroom enrollments</span>
+        {/await}
+        {#if !!fetch_error}
+            <span class="text-red-500">{fetch_error}</span>
         {/if}
-        <div class="flex-grow flex flex-col justify-start items-center mx-6">
-            {#await courses_promise}
-                <span class="animate-pulse">Checking classroom enrollments</span
-                >
-            {/await}
-            {#if !!fetch_error}
-                <span class="text-red-500">{fetch_error}</span>
-            {/if}
-            {#if show_has_new_posts}
-                <span
-                    transition:slide={{ duration: 1000 }}
-                    class="text-green-500">There are new posts</span
-                >
-            {/if}
+        {#if show_has_new_posts}
+            <span transition:slide={{ duration: 1000 }} class="text-green-500"
+                >There are new posts</span
+            >
+        {/if}
 
-            {#await posts_promises}
-                <div class="flex flex-col justify-center items-center">
-                    <span class="block"
-                        >Fetched posts from {posts_fetched} / {total_courses} courses</span
-                    >
-                    {#if posts_fetched > 0}
-                        <progress
-                            class="progress progress-success w-56 md:w-96"
-                            value={percentage_fetched}
-                            max="100"
-                        />
-                    {:else}
-                        <progress
-                            class="progress progress-success w-56 md:w-72"
-                        />
-                    {/if}
-                </div>
-            {:catch}
-                <div><span>Failed to fetch posts</span></div>
-            {/await}
-            <div class="w-full">
-                {#each filtered_posts as item (item.id)}
-                    <div
-                        class="card bg-base-100 shadow-xl shadow-base-300 my-4"
-                    >
-                        <PostCard
-                            {item}
-                            course_name={$course_map.get(item.courseId).name}
-                        />
-                    </div>
-                {/each}
+        {#await posts_promises}
+            <div class="flex flex-col justify-center items-center">
+                <span class="block"
+                    >Fetched posts from {posts_fetched} / {total_courses} courses</span
+                >
+                {#if posts_fetched > 0}
+                    <progress
+                        class="progress progress-success w-56 md:w-96"
+                        value={percentage_fetched}
+                        max="100"
+                    />
+                {:else}
+                    <progress class="progress progress-success w-56 md:w-72" />
+                {/if}
             </div>
+        {:catch}
+            <div><span>Failed to fetch posts</span></div>
+        {/await}
+        <div class="w-full">
+            {#each filtered_posts as item (item.id)}
+                <div class="card bg-base-100 shadow-xl shadow-base-300 my-4">
+                    <PostCard
+                        {item}
+                        course_name={$course_map.get(item.courseId).name}
+                    />
+                </div>
+            {/each}
         </div>
-    </main>
-</body>
+    </div>
+</main>

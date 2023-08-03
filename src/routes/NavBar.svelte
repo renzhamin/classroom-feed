@@ -1,6 +1,6 @@
 <script lang="ts">
     import { slide } from "svelte/transition";
-    import { localStore } from "$lib/helpers";
+    import { localStore } from "$lib/client/helpers";
     import { sidebar_visible } from "$lib/store";
     import { onMount } from "svelte";
 

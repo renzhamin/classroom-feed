@@ -1,7 +1,7 @@
 <script lang="ts">
     import { fly } from "svelte/transition";
     import { sel_courses, course_map } from "$lib/store";
-    import { localStore } from "$lib/helpers";
+    import { localStore } from "$lib/client/helpers";
 
     $: localStore.set("sel_courses", [...new Set($sel_courses)]);
 </script>

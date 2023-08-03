@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Post } from "$lib/data";
-    import { format_date } from "$lib/helpers";
+    import { format_date } from "$lib/client/helpers";
     export let item: Post;
     export let course_name: string | undefined;
 </script>
@@ -9,7 +9,7 @@
     <h2 class="card-title">
         {course_name}
     </h2>
-    <p>{item.text}</p>
+    <p class="whitespace-pre-line">{item.text}</p>
     <div class="flex">
         <div class="justify-start">
             {format_date(item.updateTime)}

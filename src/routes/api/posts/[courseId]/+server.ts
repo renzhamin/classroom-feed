@@ -1,5 +1,5 @@
-import type { Post } from "$lib/data"
-import { delay, get_announcements } from "$lib/helpers"
+import type { Post } from "$lib/server/data"
+import { delay, get_announcements } from "$lib/server/helpers"
 import { json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 

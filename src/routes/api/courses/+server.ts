@@ -1,4 +1,4 @@
-import { fetch_courses } from "$lib/helpers"
+import { fetch_courses } from "$lib/server/helpers"
 import { json } from "@sveltejs/kit"
 
 import {

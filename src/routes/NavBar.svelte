@@ -25,7 +25,7 @@
 </script>
 
 <div
-    class="flex justify-center items-center sticky top-0 w-full h-14 bg-base-300 z-10"
+    class="flex justify-center items-center sticky top-0 w-full h-[6vh] bg-base-300 z-10"
 >
     <div class="mr-auto">
         <button

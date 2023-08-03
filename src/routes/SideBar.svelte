@@ -9,7 +9,7 @@
 <aside
     in:fly={{ x: -200, duration: 500 }}
     out:fly={{ x: -200, duration: 400 }}
-    class="flex flex-col gap-y-2 justify-center items-center md:sticky md:top-10 w-full md:w-72 h-screen p-4 bg-base-200"
+    class="flex flex-col gap-y-2 justify-center items-center md:sticky md:top-[6vh] w-full md:w-72 h-[94vh] p-4 bg-base-200"
 >
     <span class="font-bold mb-2">Course Filters</span>
     <div class="flex justify-between gap-2">
@@ -29,7 +29,7 @@
         </button>
     </div>
 
-    <div class="overflow-scroll w-full h-full scroll-green px-4">
+    <div class="overflow-scroll w-full scroll-green px-2">
         {#if $course_map}
             {#each $course_map as [id, course]}
                 <div class="form-control">
@@ -47,4 +47,10 @@
             {/each}
         {/if}
     </div>
+
+    <a
+        href="https://classroom.google.com/a/not-turned-in/all"
+        target="_blank"
+        class="mt-auto btn btn-outline btn-sm w-full h-2">Assignments</a
+    >
 </aside>

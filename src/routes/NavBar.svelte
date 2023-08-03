@@ -5,6 +5,7 @@
     import { onMount } from "svelte";
 
     let theme = "light";
+    let log_out_modal: HTMLDialogElement;
 
     onMount(() => {
         if (
@@ -81,7 +82,12 @@
         >
     </div>
     <div>
-        <button class="btn btn-outline btn-sm">Log Out</button>
+        <button
+            class="btn btn-outline btn-sm"
+            on:click={() => {
+                log_out_modal?.showModal();
+            }}>Log Out</button
+        >
     </div>
     <div class="avatar">
         <div class="w-10 rounded-full mx-6">
@@ -91,4 +97,18 @@
             />
         </div>
     </div>
+    <dialog bind:this={log_out_modal} class="modal">
+        <form method="dialog" class="modal-box">
+            <p class="py-4 font-bold">Are you sure you want to log out ?</p>
+            <div class="modal-action">
+                <button class="btn btn-error btn-outline" on:click={() => {}}
+                    >Log Out</button
+                >
+                <button class="btn btn-success btn-outline w-28">Close</button>
+            </div>
+        </form>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
 </div>

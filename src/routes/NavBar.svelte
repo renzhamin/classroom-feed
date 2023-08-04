@@ -81,21 +81,31 @@
             >Classroom Feed</span
         >
     </div>
-    <div>
-        <button
-            class="btn btn-outline btn-sm"
-            on:click={() => {
-                log_out_modal?.showModal();
-            }}>Log Out</button
+
+    <a target="_blank" href="/about" class="btn btn-sm btn-outline">about</a>
+
+    <div class="dropdown dropdown-bottom dropdown-end">
+        <label tabindex="0">
+            <div class="w-10 mx-6">
+                <img
+                    class="object-contain rounded-full border-2 border-base-content hover:scale-105"
+                    src="https://avatars.githubusercontent.com/u/57265942?v=4"
+                    alt="avatar"
+                />
+            </div>
+        </label>
+        <ul
+            tabindex="0"
+            class="dropdown-content z-[1] menu p-2 shadow-3xl bg-base-200 rounded-box w-52"
         >
-    </div>
-    <div class="avatar">
-        <div class="w-10 rounded-full mx-6">
-            <img
-                src="https://avatars.githubusercontent.com/u/57265942?v=4"
-                alt="avatar"
-            />
-        </div>
+            <li>
+                <button
+                    on:click={() => {
+                        log_out_modal?.showModal();
+                    }}>Log Out</button
+                >
+            </li>
+        </ul>
     </div>
     <dialog bind:this={log_out_modal} class="modal">
         <form method="dialog" class="modal-box">

@@ -3,6 +3,9 @@
     import { localStore } from "$lib/client/helpers";
     import { sidebar_visible } from "$lib/store";
     import { onMount } from "svelte";
+    import { signOut } from "@auth/sveltekit/client";
+    import { page } from "$app/stores";
+    import { invalidate, invalidateAll } from "$app/navigation";
 
     let theme = "light";
     let log_out_modal: HTMLDialogElement;
@@ -88,8 +91,8 @@
         <label tabindex="0">
             <div class="w-10 mx-6">
                 <img
-                    class="object-contain rounded-full border-2 border-base-content hover:scale-105"
-                    src="https://avatars.githubusercontent.com/u/57265942?v=4"
+                    class="object-contain rounded-full border-2 border-base-content hover:scale-105 hover:cursor-pointer"
+                    src={$page.data.session.user?.image}
                     alt="avatar"
                 />
             </div>
@@ -111,8 +114,12 @@
         <form method="dialog" class="modal-box">
             <p class="py-4 font-bold">Are you sure you want to log out ?</p>
             <div class="modal-action">
-                <button class="btn btn-error btn-outline" on:click={() => {}}
-                    >Log Out</button
+                <button
+                    class="btn btn-error btn-outline"
+                    on:click={() => {
+                        invalidateAll();
+                        signOut();
+                    }}>Log Out</button
                 >
                 <button class="btn btn-success btn-outline w-28">Close</button>
             </div>

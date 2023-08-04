@@ -1,3 +1,9 @@
+<script>
+    import { signIn } from "@auth/sveltekit/client";
+    import { page } from "$app/stores";
+    import { goto } from "$app/navigation";
+</script>
+
 <div class=" w-screen">
     <div class="flex-col-center lg:flex-row">
         <div class="h-screen lg:h-full flex-col-center">
@@ -6,7 +12,18 @@
                     Check announcements of all your enrolled google classrooms
                     sorted by last updated time!
                 </h1>
-                <a href="/feed" class="btn btn-primary">Get Started</a>
+                <button
+                    class="btn btn-primary"
+                    on:click={() => {
+                        if (!$page.data.session) {
+                            signIn("google");
+                        } else {
+                            goto("/feed");
+                        }
+                    }}
+                >
+                    Get Started</button
+                >
             </div>
         </div>
         <div class="h-screen lg:max-h-screen lg:p-8">

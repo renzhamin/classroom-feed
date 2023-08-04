@@ -1,5 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
+import type { DefaultSession } from "@auth/core/types"
+
 declare global {
     namespace App {
         // interface Error {}
@@ -7,11 +9,14 @@ declare global {
         // interface PageData {}
         // interface Platform {}
     }
-    namespace svelteHTML {
-        interface HTMLAttributes<T> {
-            "on:enterViewport"?: (event: any) => any
-            "on:exitViewport"?: (event: any) => any
-        }
+}
+
+declare module "@auth/core/types" {
+    interface Session {
+        user: {} & DefaultSession["user"] & Your_Custom_Interfaces
+        refresh_token: string | undefined
+        access_token: string | undefined
+        error: string | undefined
     }
 }
 

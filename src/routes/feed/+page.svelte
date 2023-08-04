@@ -148,7 +148,7 @@
 </script>
 
 <NavBar />
-<main class="flex flex-col md:flex-row">
+<main class="min-h-[94vh] flex flex-col md:flex-row">
     {#if $sidebar_visible}
         <SideBar />
     {/if}

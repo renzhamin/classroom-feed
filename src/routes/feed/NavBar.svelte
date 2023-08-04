@@ -82,7 +82,7 @@
         >
     </div>
 
-    <a target="_blank" href="/about" class="btn btn-sm btn-outline">about</a>
+    <a target="_blank" href="/" class="btn btn-sm btn-outline">about</a>
 
     <div class="dropdown dropdown-bottom dropdown-end">
         <label tabindex="0">

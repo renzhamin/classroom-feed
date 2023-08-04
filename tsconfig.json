@@ -1,6 +1,11 @@
 {
     "extends": "./.svelte-kit/tsconfig.json",
     "compilerOptions": {
+        "types": [
+            "vite-plugin-pwa/info",
+            "vite-plugin-pwa/register",
+            "vite-plugin-pwa/svelte"
+        ],
         "plugins": [
             {
                 "name": "typescript-svelte-plugin"

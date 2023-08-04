@@ -29,7 +29,7 @@
         </button>
     </div>
 
-    <div class="overflow-scroll w-full scroll-green px-2">
+    <div class="overflow-auto w-full scroll-green px-2">
         {#if $course_map}
             {#each $course_map as [id, course]}
                 <div class="form-control">

@@ -46,7 +46,7 @@ const checks = (async ({ event, resolve }) => {
 
     if (RATE_LIMIT === "true" && hit_api) {
         try {
-            const limiter_id = event.getClientAddress()
+            const limiter_id = session.user.email
             const { success, limit, reset, remaining } = await ratelimit.limit(
                 limiter_id
             )

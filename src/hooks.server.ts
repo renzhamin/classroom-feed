@@ -27,7 +27,7 @@ if (RATE_LIMIT === "true") {
 
         ratelimit = new Ratelimit({
             redis,
-            limiter: Ratelimit.slidingWindow(6, "120 s"),
+            limiter: Ratelimit.slidingWindow(10, "120 s"),
             ephemeralCache: cache,
         })
     }

@@ -5,7 +5,7 @@
     import { onMount } from "svelte";
     import { signOut } from "@auth/sveltekit/client";
     import { page } from "$app/stores";
-    import { invalidate, invalidateAll } from "$app/navigation";
+    import { invalidateAll } from "$app/navigation";
 
     let theme = "light";
     let log_out_modal: HTMLDialogElement;
@@ -85,7 +85,7 @@
         >
     </div>
 
-    <a target="_blank" href="/" class="btn btn-sm btn-outline">about</a>
+    <a href="/about" class="btn btn-sm btn-outline">about</a>
 
     <details class="dropdown dropdown-bottom dropdown-end">
         <summary class="w-10 mx-6">

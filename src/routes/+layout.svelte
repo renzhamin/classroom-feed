@@ -12,3 +12,15 @@
 <main>
     <slot />
 </main>
+
+<footer class="footer footer-center p-4 bg-base-300 text-base-content">
+    <div>
+        <p>
+            Copyright © 2023 <a
+                class="text-accent"
+                href="https://www.linkedin.com/in/renzhamin"
+                target="_blank">@renzhamin</a
+            >
+        </p>
+    </div>
+</footer>

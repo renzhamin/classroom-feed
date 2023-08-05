@@ -87,18 +87,15 @@
 
     <a target="_blank" href="/" class="btn btn-sm btn-outline">about</a>
 
-    <div class="dropdown dropdown-bottom dropdown-end">
-        <label tabindex="0">
-            <div class="w-10 mx-6">
-                <img
-                    class="object-contain rounded-full border-2 border-base-content hover:scale-105 hover:cursor-pointer"
-                    src={$page.data.session.user?.image}
-                    alt="avatar"
-                />
-            </div>
-        </label>
+    <details class="dropdown dropdown-bottom dropdown-end">
+        <summary class="w-10 mx-6">
+            <img
+                class="object-contain rounded-full border-2 border-base-content hover:scale-105 hover:cursor-pointer"
+                src={$page.data.session.user?.image}
+                alt="avatar"
+            />
+        </summary>
         <ul
-            tabindex="0"
             class="dropdown-content z-[1] menu p-2 shadow-3xl bg-base-200 rounded-box w-52"
         >
             <li>
@@ -109,7 +106,7 @@
                 >
             </li>
         </ul>
-    </div>
+    </details>
     <dialog bind:this={log_out_modal} class="modal">
         <form method="dialog" class="modal-box">
             <p class="py-4 font-bold">Are you sure you want to log out ?</p>

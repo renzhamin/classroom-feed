@@ -16,7 +16,8 @@
         </div>
         <div class="card-actions justify-end ml-auto">
             <a
-                class="link w-4 h-4 md:scale-125"
+                class="link w-4 h-4 md:scale-125 tooltip"
+                data-tip="link to post"
                 href={item.alternateLink}
                 target="_blank"
             >

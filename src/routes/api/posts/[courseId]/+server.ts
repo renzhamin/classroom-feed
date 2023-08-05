@@ -26,7 +26,7 @@ function get_posts(courseId: string) {
     return get_announcements(courseId).slice(0, 1)
 }
 
-export const GET = (async ({ params, cookies }) => {
+export const GET = (async ({ params, cookies, setHeaders }) => {
     let courseId = params.courseId
     let posts: Post[]
     const last_fetched = Number(cookies.get(courseId))
@@ -45,7 +45,7 @@ export const GET = (async ({ params, cookies }) => {
         if (!posts) {
             // Cache Miss
             posts = get_posts(courseId)
-            redis.set(courseId, posts)
+            redis.set(courseId, posts, { ex: cache_exp })
             cookies.set(courseId, Date.now().toString())
         }
     } else {
@@ -53,9 +53,10 @@ export const GET = (async ({ params, cookies }) => {
         posts = get_posts(courseId)
     }
 
-    /* setHeaders({ */
-    /*     "cache-control": "public, max-age=60", */
-    /* }) */
+    setHeaders({
+        "cache-control": "public, max-age=60",
+    })
+
     let updated = false
     if (posts?.length) {
         const latest_post_time = new Date(posts[0].updateTime).getTime()

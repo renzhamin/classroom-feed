@@ -13,7 +13,8 @@ export default defineConfig({
                 name: "Classroom Feed",
                 short_name: "classroom-feed",
                 description: "All your classroom announcements in one place",
-                theme_color: "#ffffff",
+                theme_color: "#1d232a",
+                background_color: "#1d232a",
                 icons: [
                     {
                         src: "pwa-64x64.png",

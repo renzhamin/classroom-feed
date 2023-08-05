@@ -34,7 +34,17 @@ if (RATE_LIMIT === "true") {
 }
 
 const checks = (async ({ event, resolve }) => {
-    if (RATE_LIMIT === "true" && event.url.pathname.startsWith("/api")) {
+    const session = await event.locals.getSession()
+
+    const hit_api = event.url.pathname.startsWith("/api")
+
+    if (!session) {
+        if (hit_api) {
+            throw error(401, "You are not signed in")
+        }
+    }
+
+    if (RATE_LIMIT === "true" && hit_api) {
         try {
             const limiter_id = event.getClientAddress()
             const { success, limit, reset, remaining } = await ratelimit.limit(

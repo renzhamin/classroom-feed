@@ -1,3 +1,5 @@
+import type { Post, Course } from "$lib/types"
+
 const courses = [
     {
         id: "1",
@@ -1878,18 +1880,4 @@ export const data: { announcements: Post[]; courses: Course[] } = {
             creatorUserId: "user-1",
         },
     ],
-}
-
-export type Post = {
-    courseId: string
-    id: string
-    text: string
-    updateTime: string
-    alternateLink: string
-    [key: string]: any
-}
-
-export type Course = {
-    id: string
-    name: string
 }

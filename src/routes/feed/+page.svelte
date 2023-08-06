@@ -1,6 +1,6 @@
 <script lang="ts">
     import { slide } from "svelte/transition";
-    import type { Post } from "$lib/server/data";
+    import type { Post } from "$lib/types";
     import { onMount } from "svelte";
     import PostCard from "./PostCard.svelte";
     import NavBar from "./NavBar.svelte";
@@ -151,7 +151,7 @@
 </script>
 
 <NavBar />
-<main class="min-h-[94vh] flex flex-col md:flex-row">
+<div class="min-h-[94vh] flex flex-col md:flex-row">
     {#if $sidebar_visible}
         <SideBar />
     {/if}
@@ -197,4 +197,4 @@
             {/each}
         </div>
     </div>
-</main>
+</div>

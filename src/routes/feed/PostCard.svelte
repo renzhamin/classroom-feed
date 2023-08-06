@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Post } from "$lib/data";
+    import type { Post } from "$lib/types";
     import { format_date } from "$lib/client/helpers";
     export let item: Post;
     export let course_name: string | undefined;
@@ -9,7 +9,7 @@
     <h2 class="card-title">
         {course_name}
     </h2>
-    <p class="whitespace-pre-line">{item.text}</p>
+    <p class="whitespace-pre-wrap" id="post_text">{item.text}</p>
     <div class="flex">
         <div class="justify-start">
             {format_date(item.updateTime)}
@@ -34,3 +34,9 @@
         </div>
     </div>
 </div>
+
+<style>
+    #post_text {
+        overflow-wrap: anywhere;
+    }
+</style>

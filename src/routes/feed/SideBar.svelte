@@ -9,7 +9,7 @@
 <aside
     in:fly={{ x: -200, duration: 500 }}
     out:fly={{ x: -200, duration: 400 }}
-    class="flex flex-col gap-y-2 justify-center items-center md:sticky md:top-[6vh] w-full md:w-72 max-h-[94vh] p-4 bg-base-200"
+    class="flex flex-col gap-y-2 justify-center items-center md:sticky md:top-[6vh] w-full md:max-w-[23%] max-h-[94vh] p-4 bg-base-200"
 >
     <span class="font-bold mb-2">Course Filters</span>
     <div class="flex justify-between gap-2">

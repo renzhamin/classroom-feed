@@ -38,7 +38,7 @@ const checks = (async ({ event, resolve }) => {
 
     const hit_api = event.url.pathname.startsWith("/api")
 
-    if (!session) {
+    if (!session?.user?.email) {
         if (hit_api) {
             throw error(401, "You are not signed in")
         }

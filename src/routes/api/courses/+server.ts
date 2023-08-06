@@ -1,4 +1,3 @@
-import { fetch_courses } from "$lib/server/helpers"
 import { json } from "@sveltejs/kit"
 
 import {
@@ -20,37 +19,65 @@ if (CACHE) {
 
 const cache_exp = 120
 
-export const GET = async ({ getClientAddress, cookies, url }) => {
-    /* throw error(429) */
-    /* await delay(3000) */
+export const GET = async ({ setHeaders, cookies, locals, fetch }) => {
+    try {
+        const session = await locals.getSession()
+        const access_token = session.access_token
 
-    /* setHeaders({ */
-    /*     "cache-control": "max-age=60", */
-    /* }) */
+        let courses: any
 
-    let courses: any
+        if (CACHE) {
+            let diff = -1
+            const id = `user:${session.user.email}`
+            const last_fetched = cookies.get(id)
+            if (last_fetched) {
+                diff = Date.now() - Number(last_fetched)
+                diff = diff / 1000
+            }
 
-    if (CACHE) {
-        let diff = -1
-        const id = `user:${getClientAddress()}`
-        const last_fetched = cookies.get(id)
-        if (last_fetched) {
-            diff = Date.now() - Number(last_fetched)
-            diff = diff / 1000
+            if (diff < cache_exp) {
+                courses = await redis.get(id)
+            }
+
+            if (!courses) {
+                courses = await fetch_courses(access_token, fetch)
+                redis.set(id, courses, { ex: cache_exp })
+                cookies.set(id, Date.now().toString())
+            }
+        } else {
+            courses = await fetch_courses(access_token, fetch)
         }
 
-        if (diff < cache_exp) {
-            courses = await redis.get(id)
-        }
+        setHeaders({
+            "cache-control": "max-age=300",
+        })
+        return json({ data: courses }, { status: 200 })
+    } catch (err) {
+        return json({ message: err.message }, { status: 503 })
+    }
+}
 
-        if (!courses) {
-            courses = await fetch_courses()
-            redis.set(id, courses, { ex: cache_exp })
-            cookies.set(id, Date.now().toString())
+async function fetch_courses(access_token: string, fetch) {
+    let fetched_courses = await fetch(
+        "https://classroom.googleapis.com/v1/courses?courseStates=ACTIVE",
+        {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+            },
         }
-    } else {
-        courses = await fetch_courses()
+    )
+
+    fetched_courses = await fetched_courses.json()
+
+    if (!fetched_courses.courses) {
+        return {}
     }
 
-    return json({ data: courses }, { status: 200 })
+    const courses = {}
+
+    fetched_courses.courses.forEach((course) => {
+        courses[course.id] = course
+    })
+
+    return courses
 }

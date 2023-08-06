@@ -96,6 +96,8 @@
     let posts_promises: Promise<PromiseSettledResult<void>[]>;
 
     onMount(() => {
+        $sidebar_visible = localStore.get("sidebar_visible", false);
+
         all_posts = localStore.get("all_posts", []);
         const saved_course_map = localStore.get("course_map");
         if (saved_course_map) {
@@ -135,8 +137,6 @@
             .catch((err) => {
                 console.error(err);
             });
-
-        $sidebar_visible = localStore.get("sidebar_visible", true);
     });
 
     $: if (all_posts?.length) {

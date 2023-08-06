@@ -103,9 +103,9 @@
         if (saved_course_map) {
             $course_map = new Map(saved_course_map);
             const course_ids = [...$course_map.keys()];
-            total_courses = course_ids.length;
             $sel_courses = localStore.get("sel_courses", false) || course_ids;
-            posts_promises = Promise.allSettled(fetchPosts(course_ids));
+            total_courses = $sel_courses.length;
+            posts_promises = Promise.allSettled(fetchPosts($sel_courses));
         }
 
         courses_promise = fetch("/api/courses")

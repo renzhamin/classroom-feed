@@ -71,6 +71,9 @@
                 show_has_new_posts = true;
                 setTimeout(() => (show_has_new_posts = false), 4000);
             }
+
+            if (!data.data) return;
+
             const new_posts = data.data as Post[];
             all_posts = all_posts?.filter(
                 (post) => !new_posts.find((new_post) => new_post.id === post.id)

@@ -119,6 +119,7 @@
                     class="btn btn-error btn-outline"
                     on:click={() => {
                         invalidateAll();
+                        localStorage.clear();
                         signOut();
                     }}>Log Out</button
                 >

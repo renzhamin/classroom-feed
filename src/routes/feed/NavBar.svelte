@@ -19,6 +19,10 @@
         } else {
             theme = document.body.dataset.theme = localStorage.theme;
         }
+
+        if ($page.data.session.error === "RefreshAccessTokenError") {
+            signOut();
+        }
     });
 
     function handle_theme_change() {

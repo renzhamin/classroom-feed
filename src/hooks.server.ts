@@ -1,16 +1,17 @@
 import { building } from "$app/environment"
-import { Redis } from "@upstash/redis"
-import { Ratelimit } from "@upstash/ratelimit"
-import { type Handle, json, redirect, error } from "@sveltejs/kit"
-import { sequence } from "@sveltejs/kit/hooks"
+import { AUTH_SECRET, GOOGLE_ID, GOOGLE_SECRET } from "$env/static/private"
 import Google from "@auth/core/providers/google"
 import { SvelteKitAuth } from "@auth/sveltekit"
-import { GOOGLE_ID, GOOGLE_SECRET, AUTH_SECRET } from "$env/static/private"
+import { error, json, type Handle } from "@sveltejs/kit"
+import { sequence } from "@sveltejs/kit/hooks"
+import { Ratelimit } from "@upstash/ratelimit"
+import { Redis } from "@upstash/redis"
 
 import {
+    RATE_LIMIT,
+    REQ_PER_DAY,
     UPSTASH_REDIS_REST_TOKEN,
     UPSTASH_REDIS_REST_URL,
-    RATE_LIMIT,
 } from "$env/static/private"
 
 let redis: Redis
@@ -27,7 +28,7 @@ if (RATE_LIMIT === "true") {
 
         ratelimit = new Ratelimit({
             redis,
-            limiter: Ratelimit.slidingWindow(10, "120 s"),
+            limiter: Ratelimit.slidingWindow(Number(REQ_PER_DAY), "1 d"),
             ephemeralCache: cache,
         })
     }
@@ -163,7 +164,6 @@ const authMiddleWare = SvelteKitAuth({
                             tokens.refresh_token ?? token.refresh_token,
                     }
                 } catch (error) {
-                    console.error("Error refreshing access token", error)
                     // The error property will be used client-side to handle the refresh token error
                     return { ...token, error: "RefreshAccessTokenError" }
                 }

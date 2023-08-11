@@ -3,6 +3,7 @@
     import { format_date } from "$lib/client/helpers";
     export let item: Post;
     export let course_name: string | undefined;
+    item.text = "hia";
 </script>
 
 <div class="card-body">

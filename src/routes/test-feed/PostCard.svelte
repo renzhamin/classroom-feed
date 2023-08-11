@@ -2,8 +2,28 @@
     import type { Post } from "$lib/types";
     import { format_date } from "$lib/client/helpers";
     import Material from "./Material.svelte";
+    import { onMount } from "svelte";
     export let item: Post;
     export let course_name: string | undefined;
+    let links: Post["materials"] = [];
+
+    const regex_match_url =
+        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+
+    onMount(() => {
+        const matches = item?.text?.matchAll(regex_match_url);
+        if (matches) {
+            [...matches].forEach((match) => {
+                links.push({
+                    link: {
+                        title: match[0],
+                        url: match[0],
+                    },
+                });
+                links = links;
+            });
+        }
+    });
 </script>
 
 <div class="card-body">
@@ -11,8 +31,19 @@
         {course_name}
     </h2>
     <p class="whitespace-pre-wrap" id="post_text">{item.text}</p>
+    {#if links.length}
+        <div>
+            <h3 class="mt-4">Extracted from announcement:</h3>
+            {#each links as link}
+                <div class="my-4">
+                    <Material material={link} />
+                </div>
+            {/each}
+        </div>
+    {/if}
     {#if item.materials}
         <div>
+            <h3 class="mt-8">Attached Materials:</h3>
             {#each item.materials as material}
                 <div class="my-4">
                     <Material {material} />

@@ -124,8 +124,8 @@
             .then((data) => {
                 if (!data.data) return;
                 const new_courses = check_for_course_change(data.data);
-                total_courses = $course_map.size;
                 if (new_courses.length) {
+                    total_courses = $course_map.size;
                     posts_promises = Promise.allSettled(
                         fetchPosts(new_courses)
                     );

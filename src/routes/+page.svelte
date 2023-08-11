@@ -71,4 +71,13 @@
             </p>
         </div>
     </div>
+    <div class="h-screen flex-col-center lg:p-16 lg:text-xl mx-12 lg:mx-0">
+        <h2 class="text-4xl text-center my-8">
+            A demo video with throttled network
+        </h2>
+        <video controls class="w-full max-w-screen-md">
+            <source src="demo.mp4" type="video/mp4" />
+            <track kind="captions" />
+        </video>
+    </div>
 </div>

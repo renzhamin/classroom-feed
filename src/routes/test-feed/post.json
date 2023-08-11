@@ -1,0 +1,78 @@
+{
+    "courseId": "616614896696",
+    "id": "617834349877",
+    "text": "This is the form link\nhttps://docs.google.com/forms/d/e/1FAIpQLSfyn3QvfODGzoZEFV2jN2ed3vC0_3mSGYf8ao2fW5xZvWBMHw/viewform?usp=sf_link",
+    "materials": [
+        {
+            "driveFile": {
+                "driveFile": {
+                    "id": "1tAaDw5M-a7eA0r4HCJuwAe2Oh0RX9_tHbrVqtQ5hmq8",
+                    "title": "Deep learning of brain magnetic resonance images: A brief review",
+                    "alternateLink": "https://docs.google.com/document/d/1tAaDw5M-a7eA0r4HCJuwAe2Oh0RX9_tHbrVqtQ5hmq8/edit?usp=drive_web",
+                    "thumbnailUrl": "https://lh3.google.com/Y6I0NCT0a6R5EFzN3JFvZHNeNxfvGK92zz5ctLXogTkCUB22V7hEWLf93yy6B5bgCq75mvg2Ks6MViPgseMQao6xtOMGIEesNWLC=s200"
+                },
+                "shareMode": "VIEW"
+            }
+        },
+        {
+            "youtubeVideo": {
+                "id": "gtJo1lTxHfs",
+                "title": "Manage Supabase projects in code with the new Management API 🚀",
+                "alternateLink": "https://www.youtube.com/watch?v=gtJo1lTxHfs",
+                "thumbnailUrl": "https://i.ytimg.com/vi/gtJo1lTxHfs/default.jpg"
+            }
+        },
+        {
+            "driveFile": {
+                "driveFile": {
+                    "id": "1ZbvJbwYE0z9gIsVXIuZVoP9D1XQ78dNa",
+                    "title": "demo-ai-chat.mp4",
+                    "alternateLink": "https://drive.google.com/file/d/1ZbvJbwYE0z9gIsVXIuZVoP9D1XQ78dNa/view?usp=drive_web",
+                    "thumbnailUrl": "https://lh5.googleusercontent.com/FGDC7AK3iCD_IsMSGdJ6aLLsLgzR274Nh5gM46YvFvfG0_8pBqqAoU-RIXB0lh2td_uJ95Pxswl0zH0=s200"
+                },
+                "shareMode": "VIEW"
+            }
+        },
+        {
+            "link": {
+                "url": "https://www.freecodecamp.org/news/practical-regex-guide-with-real-life-examples/",
+                "title": "A Practical Guide to Regular Expressions – Learn RegEx with Real Life Examples",
+                "thumbnailUrl": "https://classroom.google.com/webthumbnail?url=https://www.freecodecamp.org/news/practical-regex-guide-with-real-life-examples/"
+            }
+        },
+        {
+            "link": {
+                "url": "https://docs.google.com/forms/d/e/1FAIpQLSfyn3QvfODGzoZEFV2jN2ed3vC0_3mSGYf8ao2fW5xZvWBMHw/viewform?usp=sf_link",
+                "title": "Google Forms: Sign-in",
+                "thumbnailUrl": "https://classroom.google.com/webthumbnail?url=https://docs.google.com/forms/d/e/1FAIpQLSfyn3QvfODGzoZEFV2jN2ed3vC0_3mSGYf8ao2fW5xZvWBMHw/viewform?usp%3Dsf_link"
+            }
+        },
+        {
+            "driveFile": {
+                "driveFile": {
+                    "id": "1GkpB1tGBKJWvJRfu1H_-MSF6WgTjRHyL",
+                    "title": "Routine_CSE_1.pdf",
+                    "alternateLink": "https://drive.google.com/file/d/1GkpB1tGBKJWvJRfu1H_-MSF6WgTjRHyL/view?usp=drive_web",
+                    "thumbnailUrl": "https://lh3.googleusercontent.com/PTS_hZRDr1o1HCwYw3QaAiO7ImMdfyvZwxTdOVDBg-B0_eTunl7M1kQfF0tU9hKvJLncKVhb5jIS9Zs=s200"
+                },
+                "shareMode": "VIEW"
+            }
+        },
+        {
+            "driveFile": {
+                "driveFile": {
+                    "id": "1t8Xuo4F1nwZitlumluq-7Y2th7GiZOzA",
+                    "title": "sveltekit-ts.zip",
+                    "alternateLink": "https://drive.google.com/file/d/1t8Xuo4F1nwZitlumluq-7Y2th7GiZOzA/view?usp=drive_web"
+                },
+                "shareMode": "VIEW"
+            }
+        }
+    ],
+    "state": "PUBLISHED",
+    "alternateLink": "https://classroom.google.com/c/NjE2NjE0ODk2Njk2/p/NjE3ODM0MzQ5ODc3",
+    "creationTime": "2023-08-11T08:41:03.287Z",
+    "updateTime": "2023-08-11T08:44:35.628Z",
+    "assigneeMode": "ALL_STUDENTS",
+    "creatorUserId": "106093559277071273932"
+}

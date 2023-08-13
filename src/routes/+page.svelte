@@ -12,6 +12,7 @@
                     Check announcements of all your enrolled google classrooms
                     sorted by last updated time!
                 </h1>
+                <h2>Mobile support via PWA</h2>
                 <button
                     class="btn btn-primary"
                     on:click={() => {

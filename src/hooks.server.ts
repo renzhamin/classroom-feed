@@ -82,7 +82,13 @@ const checks = (async ({ event, resolve }) => {
                 )
             }
         } catch (err) {
-            console.error("ERROR IN hooks.server Handle", err)
+            return json(
+                {
+                    message:
+                        "Redis cache quota exceeded (maybe). Contact Admin",
+                },
+                { status: 503 }
+            )
         }
     }
 

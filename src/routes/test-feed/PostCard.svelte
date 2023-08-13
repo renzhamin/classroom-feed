@@ -30,14 +30,14 @@
     <h2 class="card-title">
         {course_name}
     </h2>
-    <p class="whitespace-pre-wrap" id="post_text">{item.text}</p>
+    <p class="whitespace-break-spaces">{item.text}</p>
     {#if links.length}
         <div>
             <h3 class="mt-4">Extracted from announcement:</h3>
             {#each links as link}
-                <div class="my-4">
+                <p class="my-4">
                     <Material material={link} />
-                </div>
+                </p>
             {/each}
         </div>
     {/if}
@@ -45,9 +45,9 @@
         <div>
             <h3 class="mt-8">Attached Materials:</h3>
             {#each item.materials as material}
-                <div class="my-4">
+                <p class="my-4">
                     <Material {material} />
-                </div>
+                </p>
             {/each}
         </div>
     {/if}
@@ -77,7 +77,7 @@
 </div>
 
 <style>
-    #post_text {
+    p {
         overflow-wrap: anywhere;
     }
 </style>

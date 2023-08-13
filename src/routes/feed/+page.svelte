@@ -191,7 +191,7 @@
                 <div class="card bg-base-100 shadow-xl shadow-base-300 my-4">
                     <PostCard
                         {item}
-                        course_name={$course_map.get(item.courseId).name}
+                        course_name={$course_map.get(item.courseId)?.name}
                     />
                 </div>
             {/each}

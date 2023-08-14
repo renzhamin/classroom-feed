@@ -29,6 +29,7 @@ if (RATE_LIMIT === "true") {
         ratelimit = new Ratelimit({
             redis,
             limiter: Ratelimit.slidingWindow(Number(REQ_PER_DAY), "1 d"),
+            analytics: true,
             ephemeralCache: cache,
         })
     }

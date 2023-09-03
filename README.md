@@ -1,38 +1,45 @@
-# create-svelte
+## Introduction
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+- Glance at the latest announcements from all of your enrolled google classrooms in one place. The announcments are sorted by last updated time. All posts has the link to their original announcement.
 
-## Creating a project
+- If the announcement contains any plain text urls, the app will extract it and make it a clickable link for convenience. Attached materails like drive folder or youtube video are extracted as well. 
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Installable on mobile as a Progressive Web App
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+![demo_image](static/page-shot.webp)
 
-# create a new project in my-app
-npm create svelte@latest my-app
+## Tech Stack
+
+The app is built with [SvelteKit](https://kit.svelte.dev/) and [authjs](https://authjs.dev/reference/sveltekit) for authentication.
+
+## Rate Limiting
+
+Implemented with [@upstash/rate-limiter](https://github.com/upstash/ratelimit) using the sliding window algorithm.
+
+## Brief overview of internals
+
+The user first makes a request to `/api/courses` to get a list of all the enrolled google classrooms which has their unique id's. Then for each classroom, the announcements are fetched from `/api/posts/:id` concurrently. The only reason for fetching in the client side is to provide the progressbar to have some indicator for the user. Also there's the added benefit of dynamically populating the feed as announcements from a course is fetched.
+
+The app makes good use of local storage. The fetch's for announcements starts immediately if list of courses is found in the storage but it still fetches the latest course list and only fetch announcement from newly added courses afterwards.
+
+## Development
+
+Install packages
+
+```sh
+pnpm install
 ```
 
-## Developing
+Run vite server
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```sh
+pnpm dev
 ```
 
-## Building
+For generating pwa assets, put the logo as `icons/source.png` or edit `pwa-assets.config.js` to point to a source file and run this command
 
-To create a production version of your app:
-
-```bash
-npm run build
+```
+pnpm pwa-assets-generator
 ```
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Make sure to copy those assets in the `static` folder.

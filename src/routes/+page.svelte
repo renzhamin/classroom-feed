@@ -68,7 +68,8 @@
                 The google classroom api that is used to fetch the announcements
                 only allows a limited number of requests for free. To ensure all
                 the users get equal usage, the app enforces the limitation of
-                maximum 100 requests per day.
+                maximum 100 requests per day. Each page refresh makes (number of
+                selected courses + 1) requests.
             </p>
         </div>
     </div>
@@ -76,9 +77,14 @@
         <h2 class="text-4xl text-center my-8">
             A demo video with throttled network
         </h2>
-        <video controls class="w-full max-w-screen-md">
+        <video controls class="w-full max-w-screen-lg">
             <source src="demo.mp4" type="video/mp4" />
-            <track kind="captions" />
         </video>
     </div>
 </div>
+
+<style>
+    video {
+        clip-path: inset(0 5px 5px 0);
+    }
+</style>

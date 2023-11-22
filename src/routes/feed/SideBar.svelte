@@ -2,7 +2,16 @@
     import { fly } from "svelte/transition";
     import { sel_courses, course_map } from "$lib/store";
     import { localStore } from "$lib/client/helpers";
+    import { page } from "$app/stores";
 
+    let assignments_link = "https://classroom.google.com/a/not-turned-in/all";
+    const email = $page?.data?.session?.user?.email;
+    if (email) {
+        assignments_link =
+            "https://accounts.google.com/AccountChooser?" +
+            "continue=https://classroom.google.com/a/not-turned-in/all&" +
+            `Email=${email}`;
+    }
     $: localStore.set("sel_courses", [...new Set($sel_courses)]);
 </script>
 
@@ -49,7 +58,7 @@
     </div>
 
     <a
-        href="https://classroom.google.com/a/not-turned-in/all"
+        href={assignments_link}
         target="_blank"
         class="mt-auto btn btn-outline btn-sm w-full h-2">Assignments</a
     >

@@ -187,9 +187,21 @@ export const data: { announcements: Post[]; courses: Course[] } = {
     courses,
     announcements: [
         {
+            courseId: "5",
+            id: "5-1",
+            text: "Hello Everyone!\nThere will be no classes this week.\nHowever, next week you will give a project idea presentation on your Database project with your group.",
+            state: "PUBLISHED",
+            alternateLink:
+                "https://classroom.google.com/c/course-5/announcement-1",
+            creationTime: "2023-07-22T09:00:00.000Z",
+            updateTime: "2023-07-28T02:00:00.000Z",
+            assigneeMode: "ALL_STUDENTS",
+            creatorUserId: "user-1",
+        },
+        {
             courseId: "1",
             id: "1-1",
-            text: "Reminder for class test #1\nDate: 26 July 2023 (Wednesday)\nTime: 02.00 PM to 02.30 PM\nSyllabus: All covered topics upto Week 4.\nRoom: 508 & 510",
+            text: "There will be no offline class today. I have uploaded the recording covering the topics of overfitting and underfitting. You can optionally watch the youtube video for further understanding.",
             state: "PUBLISHED",
             alternateLink:
                 "https://classroom.google.com/c/NjE2NjI4MTA2NzEy/p/NjE2NjI5OTIxNDAz",
@@ -197,6 +209,24 @@ export const data: { announcements: Post[]; courses: Course[] } = {
             updateTime: "2023-07-25T11:18:02.941Z",
             assigneeMode: "ALL_STUDENTS",
             creatorUserId: "102228857692621657049",
+            materials: [
+                {
+                    driveFile: {
+                        driveFile: {
+                            title: "Recordings",
+                            alternateLink:
+                                "https://drive.google.com/drive/folders/1-F4F_jpP-kYkyDhxDovlSm48wXXZNxXq",
+                        },
+                    },
+                },
+                {
+                    youtubeVideo: {
+                        title: "Machine Learning: Overfitting and Underfitting",
+                        alternateLink:
+                            "https://drive.google.com/drive/folders/1-F4F_jpP-kYkyDhxDovlSm48wXXZNxXq",
+                    },
+                },
+            ],
         },
         {
             courseId: "1",
@@ -309,7 +339,7 @@ export const data: { announcements: Post[]; courses: Course[] } = {
         {
             courseId: "2",
             id: "2-1",
-            text: "Todays class will start from 10:30 am\n Room no 301.",
+            text: "Todays class will start from 10:30 am\n Room no 301. Read up on this material beforehand. https://drive.google.com/drive/folders/1-F4F_jpP-kYkyDhxDovlSm48wXXZNxXq",
             state: "PUBLISHED",
             alternateLink:
                 "https://classroom.google.com/c/NjE2NjI4MTA2NzEy/p/NjE2NjI5OTIxNDAz",
@@ -581,18 +611,6 @@ export const data: { announcements: Post[]; courses: Course[] } = {
             updateTime: "2023-08-11T11:30:00.000Z",
             assigneeMode: "ALL_STUDENTS",
             creatorUserId: "user-7",
-        },
-        {
-            courseId: "5",
-            id: "5-1",
-            text: "Hello Everyone!\n There will be no classes this week.\n However, next week you will give a project idea presentation on your Database project with your group.\n So take this week to prepare for that.\n",
-            state: "PUBLISHED",
-            alternateLink:
-                "https://classroom.google.com/c/course-5/announcement-1",
-            creationTime: "2023-07-22T09:00:00.000Z",
-            updateTime: "2023-07-25T02:00:00.000Z",
-            assigneeMode: "ALL_STUDENTS",
-            creatorUserId: "user-1",
         },
         {
             courseId: "5",
